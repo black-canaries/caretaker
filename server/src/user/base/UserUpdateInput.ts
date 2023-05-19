@@ -11,10 +11,15 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional } from "class-validator";
+import { IsString, IsOptional, ValidateNested } from "class-validator";
+import { GlucoseUpdateManyWithoutUsersInput } from "./GlucoseUpdateManyWithoutUsersInput";
+import { Type } from "class-transformer";
+import { InsulinUpdateManyWithoutUsersInput } from "./InsulinUpdateManyWithoutUsersInput";
+import { MealUpdateManyWithoutUsersInput } from "./MealUpdateManyWithoutUsersInput";
 import { IsJSONValue } from "@app/custom-validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
+import { SleepUpdateManyWithoutUsersInput } from "./SleepUpdateManyWithoutUsersInput";
 
 @InputType()
 class UserUpdateInput {
@@ -31,6 +36,30 @@ class UserUpdateInput {
 
   @ApiProperty({
     required: false,
+    type: () => GlucoseUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => GlucoseUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => GlucoseUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  glucose?: GlucoseUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => InsulinUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => InsulinUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => InsulinUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  insulin?: InsulinUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
     type: String,
   })
   @IsString()
@@ -39,6 +68,18 @@ class UserUpdateInput {
     nullable: true,
   })
   lastName?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => MealUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => MealUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => MealUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  meals?: MealUpdateManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,
@@ -60,6 +101,18 @@ class UserUpdateInput {
     nullable: true,
   })
   roles?: InputJsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => SleepUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => SleepUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => SleepUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  sleep?: SleepUpdateManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,

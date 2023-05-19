@@ -25,6 +25,14 @@ import { DeleteUserArgs } from "./DeleteUserArgs";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserFindUniqueArgs } from "./UserFindUniqueArgs";
 import { User } from "./User";
+import { GlucoseFindManyArgs } from "../../glucose/base/GlucoseFindManyArgs";
+import { Glucose } from "../../glucose/base/Glucose";
+import { InsulinFindManyArgs } from "../../insulin/base/InsulinFindManyArgs";
+import { Insulin } from "../../insulin/base/Insulin";
+import { MealFindManyArgs } from "../../meal/base/MealFindManyArgs";
+import { Meal } from "../../meal/base/Meal";
+import { SleepFindManyArgs } from "../../sleep/base/SleepFindManyArgs";
+import { Sleep } from "../../sleep/base/Sleep";
 import { UserService } from "../user.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => User)
@@ -133,5 +141,85 @@ export class UserResolverBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [Glucose], { name: "glucose" })
+  @nestAccessControl.UseRoles({
+    resource: "Glucose",
+    action: "read",
+    possession: "any",
+  })
+  async resolveFieldGlucose(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: GlucoseFindManyArgs
+  ): Promise<Glucose[]> {
+    const results = await this.service.findGlucose(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [Insulin], { name: "insulin" })
+  @nestAccessControl.UseRoles({
+    resource: "Insulin",
+    action: "read",
+    possession: "any",
+  })
+  async resolveFieldInsulin(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: InsulinFindManyArgs
+  ): Promise<Insulin[]> {
+    const results = await this.service.findInsulin(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [Meal], { name: "meals" })
+  @nestAccessControl.UseRoles({
+    resource: "Meal",
+    action: "read",
+    possession: "any",
+  })
+  async resolveFieldMeals(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: MealFindManyArgs
+  ): Promise<Meal[]> {
+    const results = await this.service.findMeals(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @graphql.ResolveField(() => [Sleep], { name: "sleep" })
+  @nestAccessControl.UseRoles({
+    resource: "Sleep",
+    action: "read",
+    possession: "any",
+  })
+  async resolveFieldSleep(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: SleepFindManyArgs
+  ): Promise<Sleep[]> {
+    const results = await this.service.findSleep(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
   }
 }

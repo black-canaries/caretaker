@@ -8,60 +8,70 @@ generator client {
 }
 
 model User {
-  createdAt DateTime @default(now())
-  firstName String?
-  id        String   @id @default(auto()) @map("_id") @mongo.ObjectId
-  lastName  String?
-  password  String
-  roles     Json
-  updatedAt DateTime @updatedAt
-  username  String   @unique
-}
-
-model Order {
   createdAt  DateTime  @default(now())
-  customer   Customer? @relation(fields: [customerId], references: [id])
-  customerId String?
-  discount   Float?
+  firstName  String?
+  glucose    Glucose[] @relation(fields: [glucoseIds], references: [id])
+  glucoseIds String[]  @mongo.ObjectId
   id         String    @id @default(auto()) @map("_id") @mongo.ObjectId
-  product    Product?  @relation(fields: [productId], references: [id])
-  productId  String?
-  quantity   Int?
-  totalPrice Int?
+  insulin    Insulin[] @relation(fields: [insulinIds], references: [id])
+  insulinIds String[]  @mongo.ObjectId
+  lastName   String?
+  meals      Meal[]
+  password   String
+  roles      Json
+  sleep      Sleep[]   @relation(fields: [sleepIds], references: [id])
+  sleepIds   String[]  @mongo.ObjectId
   updatedAt  DateTime  @updatedAt
+  username   String    @unique
 }
 
-model Customer {
-  address   Address? @relation(fields: [addressId], references: [id])
-  addressId String?
+model Insulin {
   createdAt DateTime @default(now())
-  email     String?
-  firstName String?
+  dose      Float
   id        String   @id @default(auto()) @map("_id") @mongo.ObjectId
-  lastName  String?
-  orders    Order[]
-  phone     String?
   updatedAt DateTime @updatedAt
+  users     User[]   @relation(fields: [usersIds], references: [id])
+  usersIds  String[] @mongo.ObjectId
 }
 
-model Address {
-  address_1 String?
-  address_2 String?
-  city      String?
-  createdAt DateTime   @default(now())
-  customers Customer[]
-  id        String     @id @default(auto()) @map("_id") @mongo.ObjectId
-  state     String?
-  updatedAt DateTime   @updatedAt
-  zip       Int?
+model Glucose {
+  createdAt    DateTime @default(now())
+  glucoseLevel Float
+  id           String   @id @default(auto()) @map("_id") @mongo.ObjectId
+  updatedAt    DateTime @updatedAt
+  users        User[]   @relation(fields: [usersIds], references: [id])
+  usersIds     String[] @mongo.ObjectId
 }
 
-model Product {
-  createdAt   DateTime @default(now())
+model Meal {
+  carbs       Float?
+  createdAt   DateTime          @default(now())
   description String?
-  id          String   @id @default(auto()) @map("_id") @mongo.ObjectId
-  itemPrice   Float?
-  name        String?
-  orders      Order[]
-  updatedAt   DateTime @updatedAt
+  fat         Float?
+  id          String            @id @default(auto()) @map("_id") @mongo.ObjectId
+  ingredients Json?
+  mealType    EnumMealMealType?
+  protein     Float?
+  updatedAt   DateTime          @updatedAt
+  user        User?             @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+model Sleep {
+  createdAt DateTime @default(now())
+  end       DateTime
+  id        String   @id @default(auto()) @map("_id") @mongo.ObjectId
+  quality   Int?
+  start     DateTime
+  updatedAt DateTime @updatedAt
+  users     User[]   @relation(fields: [usersIds], references: [id])
+  usersIds  String[] @mongo.ObjectId
+}
+
+enum EnumMealMealType {
+  Breakfast
+  Lunch
+  Dinner
+  Snack
+  Other
 }

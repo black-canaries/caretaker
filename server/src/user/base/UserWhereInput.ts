@@ -13,8 +13,12 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { IsOptional, ValidateNested } from "class-validator";
+import { GlucoseListRelationFilter } from "../../glucose/base/GlucoseListRelationFilter";
 import { StringFilter } from "../../util/StringFilter";
+import { InsulinListRelationFilter } from "../../insulin/base/InsulinListRelationFilter";
+import { MealListRelationFilter } from "../../meal/base/MealListRelationFilter";
+import { SleepListRelationFilter } from "../../sleep/base/SleepListRelationFilter";
 
 @InputType()
 class UserWhereInput {
@@ -31,6 +35,18 @@ class UserWhereInput {
 
   @ApiProperty({
     required: false,
+    type: () => GlucoseListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => GlucoseListRelationFilter)
+  @IsOptional()
+  @Field(() => GlucoseListRelationFilter, {
+    nullable: true,
+  })
+  glucose?: GlucoseListRelationFilter;
+
+  @ApiProperty({
+    required: false,
     type: StringFilter,
   })
   @Type(() => StringFilter)
@@ -42,6 +58,18 @@ class UserWhereInput {
 
   @ApiProperty({
     required: false,
+    type: () => InsulinListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => InsulinListRelationFilter)
+  @IsOptional()
+  @Field(() => InsulinListRelationFilter, {
+    nullable: true,
+  })
+  insulin?: InsulinListRelationFilter;
+
+  @ApiProperty({
+    required: false,
     type: StringNullableFilter,
   })
   @Type(() => StringNullableFilter)
@@ -50,6 +78,30 @@ class UserWhereInput {
     nullable: true,
   })
   lastName?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => MealListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => MealListRelationFilter)
+  @IsOptional()
+  @Field(() => MealListRelationFilter, {
+    nullable: true,
+  })
+  meals?: MealListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => SleepListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => SleepListRelationFilter)
+  @IsOptional()
+  @Field(() => SleepListRelationFilter, {
+    nullable: true,
+  })
+  sleep?: SleepListRelationFilter;
 
   @ApiProperty({
     required: false,
