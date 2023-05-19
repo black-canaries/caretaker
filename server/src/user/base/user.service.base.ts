@@ -10,7 +10,7 @@ https://docs.amplication.com/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "../../prisma/prisma.service";
-import { Prisma, User } from "@prisma/client";
+import { Prisma, User, Glucose, Insulin, Meal, Sleep } from "@prisma/client";
 import { PasswordService } from "../../auth/password.service";
 import { transformStringFieldUpdateInput } from "../../prisma.util";
 
@@ -70,5 +70,49 @@ export class UserServiceBase {
     args: Prisma.SelectSubset<T, Prisma.UserDeleteArgs>
   ): Promise<User> {
     return this.prisma.user.delete(args);
+  }
+
+  async findGlucose(
+    parentId: string,
+    args: Prisma.GlucoseFindManyArgs
+  ): Promise<Glucose[]> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .glucose(args);
+  }
+
+  async findInsulin(
+    parentId: string,
+    args: Prisma.InsulinFindManyArgs
+  ): Promise<Insulin[]> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .insulin(args);
+  }
+
+  async findMeals(
+    parentId: string,
+    args: Prisma.MealFindManyArgs
+  ): Promise<Meal[]> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .meals(args);
+  }
+
+  async findSleep(
+    parentId: string,
+    args: Prisma.SleepFindManyArgs
+  ): Promise<Sleep[]> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .sleep(args);
   }
 }

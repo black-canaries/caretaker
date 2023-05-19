@@ -11,10 +11,15 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional } from "class-validator";
+import { IsString, IsOptional, ValidateNested } from "class-validator";
+import { GlucoseCreateNestedManyWithoutUsersInput } from "./GlucoseCreateNestedManyWithoutUsersInput";
+import { Type } from "class-transformer";
+import { InsulinCreateNestedManyWithoutUsersInput } from "./InsulinCreateNestedManyWithoutUsersInput";
+import { MealCreateNestedManyWithoutUsersInput } from "./MealCreateNestedManyWithoutUsersInput";
 import { IsJSONValue } from "@app/custom-validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
+import { SleepCreateNestedManyWithoutUsersInput } from "./SleepCreateNestedManyWithoutUsersInput";
 
 @InputType()
 class UserCreateInput {
@@ -31,6 +36,30 @@ class UserCreateInput {
 
   @ApiProperty({
     required: false,
+    type: () => GlucoseCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => GlucoseCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => GlucoseCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  glucose?: GlucoseCreateNestedManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => InsulinCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => InsulinCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => InsulinCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  insulin?: InsulinCreateNestedManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
     type: String,
   })
   @IsString()
@@ -39,6 +68,18 @@ class UserCreateInput {
     nullable: true,
   })
   lastName?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => MealCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => MealCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => MealCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  meals?: MealCreateNestedManyWithoutUsersInput;
 
   @ApiProperty({
     required: true,
@@ -54,6 +95,18 @@ class UserCreateInput {
   @IsJSONValue()
   @Field(() => GraphQLJSON)
   roles!: InputJsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => SleepCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => SleepCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => SleepCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  sleep?: SleepCreateNestedManyWithoutUsersInput;
 
   @ApiProperty({
     required: true,

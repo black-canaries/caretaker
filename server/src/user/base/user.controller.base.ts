@@ -27,6 +27,18 @@ import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserUpdateInput } from "./UserUpdateInput";
 import { User } from "./User";
+import { GlucoseFindManyArgs } from "../../glucose/base/GlucoseFindManyArgs";
+import { Glucose } from "../../glucose/base/Glucose";
+import { GlucoseWhereUniqueInput } from "../../glucose/base/GlucoseWhereUniqueInput";
+import { InsulinFindManyArgs } from "../../insulin/base/InsulinFindManyArgs";
+import { Insulin } from "../../insulin/base/Insulin";
+import { InsulinWhereUniqueInput } from "../../insulin/base/InsulinWhereUniqueInput";
+import { MealFindManyArgs } from "../../meal/base/MealFindManyArgs";
+import { Meal } from "../../meal/base/Meal";
+import { MealWhereUniqueInput } from "../../meal/base/MealWhereUniqueInput";
+import { SleepFindManyArgs } from "../../sleep/base/SleepFindManyArgs";
+import { Sleep } from "../../sleep/base/Sleep";
+import { SleepWhereUniqueInput } from "../../sleep/base/SleepWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -199,5 +211,402 @@ export class UserControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/glucose")
+  @ApiNestedQuery(GlucoseFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Glucose",
+    action: "read",
+    possession: "any",
+  })
+  async findManyGlucose(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Glucose[]> {
+    const query = plainToClass(GlucoseFindManyArgs, request.query);
+    const results = await this.service.findGlucose(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        glucoseLevel: true,
+        id: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/glucose")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectGlucose(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: GlucoseWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      glucose: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/glucose")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateGlucose(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: GlucoseWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      glucose: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/glucose")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectGlucose(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: GlucoseWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      glucose: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/insulin")
+  @ApiNestedQuery(InsulinFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Insulin",
+    action: "read",
+    possession: "any",
+  })
+  async findManyInsulin(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Insulin[]> {
+    const query = plainToClass(InsulinFindManyArgs, request.query);
+    const results = await this.service.findInsulin(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        dose: true,
+        id: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/insulin")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectInsulin(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: InsulinWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      insulin: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/insulin")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateInsulin(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: InsulinWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      insulin: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/insulin")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectInsulin(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: InsulinWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      insulin: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/meals")
+  @ApiNestedQuery(MealFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Meal",
+    action: "read",
+    possession: "any",
+  })
+  async findManyMeals(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Meal[]> {
+    const query = plainToClass(MealFindManyArgs, request.query);
+    const results = await this.service.findMeals(params.id, {
+      ...query,
+      select: {
+        carbs: true,
+        createdAt: true,
+        description: true,
+        fat: true,
+        id: true,
+        ingredients: true,
+        mealType: true,
+        protein: true,
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/meals")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectMeals(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: MealWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      meals: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/meals")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateMeals(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: MealWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      meals: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/meals")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectMeals(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: MealWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      meals: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/sleep")
+  @ApiNestedQuery(SleepFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Sleep",
+    action: "read",
+    possession: "any",
+  })
+  async findManySleep(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Sleep[]> {
+    const query = plainToClass(SleepFindManyArgs, request.query);
+    const results = await this.service.findSleep(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        end: true,
+        id: true,
+        quality: true,
+        start: true,
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/sleep")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectSleep(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: SleepWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      sleep: {
+        connect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/sleep")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateSleep(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: SleepWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      sleep: {
+        set: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/sleep")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectSleep(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: SleepWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      sleep: {
+        disconnect: body,
+      },
+    };
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

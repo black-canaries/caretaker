@@ -11,11 +11,15 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString, IsOptional } from "class-validator";
+import { IsDate, IsString, IsOptional, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
+import { Glucose } from "../../glucose/base/Glucose";
+import { Insulin } from "../../insulin/base/Insulin";
+import { Meal } from "../../meal/base/Meal";
 import { IsJSONValue } from "@app/custom-validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
+import { Sleep } from "../../sleep/base/Sleep";
 
 @ObjectType()
 class User {
@@ -39,12 +43,30 @@ class User {
   firstName!: string | null;
 
   @ApiProperty({
+    required: false,
+    type: () => [Glucose],
+  })
+  @ValidateNested()
+  @Type(() => Glucose)
+  @IsOptional()
+  glucose?: Array<Glucose>;
+
+  @ApiProperty({
     required: true,
     type: String,
   })
   @IsString()
   @Field(() => String)
   id!: string;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Insulin],
+  })
+  @ValidateNested()
+  @Type(() => Insulin)
+  @IsOptional()
+  insulin?: Array<Insulin>;
 
   @ApiProperty({
     required: false,
@@ -58,11 +80,29 @@ class User {
   lastName!: string | null;
 
   @ApiProperty({
+    required: false,
+    type: () => [Meal],
+  })
+  @ValidateNested()
+  @Type(() => Meal)
+  @IsOptional()
+  meals?: Array<Meal>;
+
+  @ApiProperty({
     required: true,
   })
   @IsJSONValue()
   @Field(() => GraphQLJSON)
   roles!: JsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Sleep],
+  })
+  @ValidateNested()
+  @Type(() => Sleep)
+  @IsOptional()
+  sleep?: Array<Sleep>;
 
   @ApiProperty({
     required: true,

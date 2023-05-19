@@ -9,22 +9,22 @@ import { UserList } from "./user/UserList";
 import { UserCreate } from "./user/UserCreate";
 import { UserEdit } from "./user/UserEdit";
 import { UserShow } from "./user/UserShow";
-import { OrderList } from "./order/OrderList";
-import { OrderCreate } from "./order/OrderCreate";
-import { OrderEdit } from "./order/OrderEdit";
-import { OrderShow } from "./order/OrderShow";
-import { CustomerList } from "./customer/CustomerList";
-import { CustomerCreate } from "./customer/CustomerCreate";
-import { CustomerEdit } from "./customer/CustomerEdit";
-import { CustomerShow } from "./customer/CustomerShow";
-import { AddressList } from "./address/AddressList";
-import { AddressCreate } from "./address/AddressCreate";
-import { AddressEdit } from "./address/AddressEdit";
-import { AddressShow } from "./address/AddressShow";
-import { ProductList } from "./product/ProductList";
-import { ProductCreate } from "./product/ProductCreate";
-import { ProductEdit } from "./product/ProductEdit";
-import { ProductShow } from "./product/ProductShow";
+import { InsulinList } from "./insulin/InsulinList";
+import { InsulinCreate } from "./insulin/InsulinCreate";
+import { InsulinEdit } from "./insulin/InsulinEdit";
+import { InsulinShow } from "./insulin/InsulinShow";
+import { GlucoseList } from "./glucose/GlucoseList";
+import { GlucoseCreate } from "./glucose/GlucoseCreate";
+import { GlucoseEdit } from "./glucose/GlucoseEdit";
+import { GlucoseShow } from "./glucose/GlucoseShow";
+import { MealList } from "./meal/MealList";
+import { MealCreate } from "./meal/MealCreate";
+import { MealEdit } from "./meal/MealEdit";
+import { MealShow } from "./meal/MealShow";
+import { SleepList } from "./sleep/SleepList";
+import { SleepCreate } from "./sleep/SleepCreate";
+import { SleepEdit } from "./sleep/SleepEdit";
+import { SleepShow } from "./sleep/SleepShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -59,32 +59,32 @@ const App = (): React.ReactElement => {
           show={UserShow}
         />
         <Resource
-          name="Order"
-          list={OrderList}
-          edit={OrderEdit}
-          create={OrderCreate}
-          show={OrderShow}
+          name="Insulin"
+          list={InsulinList}
+          edit={InsulinEdit}
+          create={InsulinCreate}
+          show={InsulinShow}
         />
         <Resource
-          name="Customer"
-          list={CustomerList}
-          edit={CustomerEdit}
-          create={CustomerCreate}
-          show={CustomerShow}
+          name="Glucose"
+          list={GlucoseList}
+          edit={GlucoseEdit}
+          create={GlucoseCreate}
+          show={GlucoseShow}
         />
         <Resource
-          name="Address"
-          list={AddressList}
-          edit={AddressEdit}
-          create={AddressCreate}
-          show={AddressShow}
+          name="Meal"
+          list={MealList}
+          edit={MealEdit}
+          create={MealCreate}
+          show={MealShow}
         />
         <Resource
-          name="Product"
-          list={ProductList}
-          edit={ProductEdit}
-          create={ProductCreate}
-          show={ProductShow}
+          name="Sleep"
+          list={SleepList}
+          edit={SleepEdit}
+          create={SleepCreate}
+          show={SleepShow}
         />
       </Admin>
     </div>
